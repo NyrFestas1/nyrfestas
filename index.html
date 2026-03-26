@@ -11,6 +11,10 @@
         href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400;1,600&display=swap"
         rel="stylesheet">
 
+    <!-- Preload crítico: hero e logo carregam antes do CSS -->
+    <link rel="preload" as="image" href="./src/images/realisticHero.png">
+    <link rel="preload" as="image"
+        href="https://res.cloudinary.com/dbcz5yhgs/image/upload/v1772106248/LOGO_NYR_ufn70y.png">
     <style>
         /* ─── TOKENS ─────────────────────────────────────── */
         :root {
@@ -207,10 +211,7 @@
             color: var(--white);
         }
 
-        .nav-pill[data-filter="all"].active {
-            background: var(--brand-orange);
-            color: var(--black);
-        }
+
 
         /* Esconder pills abaixo de 940px — filter bar cumpre a função */
         @media (max-width: 940px) {
@@ -365,16 +366,9 @@
             border-color: var(--blue);
         }
 
-        .filter-pill.active {
-            background: var(--blue);
-            color: var(--white);
-            border-color: var(--blue);
-        }
-
-        .filter-pill[data-filter="all"].active {
-            background: var(--yellow);
-            color: var(--black);
-            border-color: var(--yellow);
+        .filter-pill:focus {
+            outline: 2px solid var(--blue);
+            outline-offset: 2px;
         }
 
         /* ─── CATEGORY SECTION ───────────────────────────── */
@@ -1169,10 +1163,215 @@
                 position: sticky;
             }
         }
+
+        /* ─── PARALLAX HERO ──────────────────────────────── */
+        .hero {
+            background-attachment: fixed;
+        }
+
+        @media (max-width: 768px) {
+
+            /* Desativa parallax em mobile (performance) */
+            .hero {
+                background-attachment: scroll;
+            }
+        }
+
+        /* ─── STAGGERED CARDS ────────────────────────────── */
+        .cards-grid .card.reveal {
+            transition-delay: 0ms;
+        }
+
+        .cards-grid .card:nth-child(1) {
+            --stagger: 0ms;
+        }
+
+        .cards-grid .card:nth-child(2) {
+            --stagger: 60ms;
+        }
+
+        .cards-grid .card:nth-child(3) {
+            --stagger: 120ms;
+        }
+
+        .cards-grid .card:nth-child(4) {
+            --stagger: 180ms;
+        }
+
+        .cards-grid .card:nth-child(5) {
+            --stagger: 60ms;
+        }
+
+        .cards-grid .card:nth-child(6) {
+            --stagger: 120ms;
+        }
+
+        .cards-grid .card:nth-child(7) {
+            --stagger: 0ms;
+        }
+
+        .cards-grid .card:nth-child(8) {
+            --stagger: 60ms;
+        }
+
+        .cards-grid .card:nth-child(9) {
+            --stagger: 120ms;
+        }
+
+        .cards-grid .card:nth-child(10) {
+            --stagger: 180ms;
+        }
+
+        .cards-grid .card.reveal {
+            transition: opacity 0.5s ease var(--stagger, 0ms),
+                transform 0.5s ease var(--stagger, 0ms),
+                box-shadow var(--transition),
+                border-color var(--transition);
+        }
+
+
+
+        /* ─── WAVE DIVIDER ───────────────────────────────── */
+        .wave-divider {
+            display: block;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            margin-bottom: -2px;
+        }
+
+        .wave-divider svg {
+            display: block;
+            width: 100%;
+            height: 48px;
+        }
+
+        .wave-divider.flip {
+            transform: rotate(180deg);
+            margin-bottom: 0;
+            margin-top: -2px;
+        }
+
+        /* ─── COUNTER ────────────────────────────────────── */
+        .hero-counter-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .hero-counter {
+            text-align: center;
+        }
+
+        .hero-counter-num {
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(36px, 5vw, 56px);
+            color: var(--yellow);
+            line-height: 1;
+            display: block;
+        }
+
+        .hero-counter-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.65);
+            display: block;
+            margin-top: 4px;
+        }
+
+
+        /* ─── PAGE LOADER ────────────────────────────────── */
+        #page-loader {
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-logo {
+            width: 140px;
+            height: auto;
+            margin-bottom: 40px;
+            animation: loader-pulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes loader-pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.75;
+                transform: scale(0.97);
+            }
+        }
+
+        .loader-bar-track {
+            width: 200px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 100px;
+            overflow: hidden;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+        }
+
+        .loader-bar-fill {
+            height: 100%;
+            background: var(--yellow, #f4b400);
+            border-radius: 100px;
+            width: 0%;
+            animation: loader-fill 1s ease-out forwards;
+        }
+
+        @keyframes loader-fill {
+            0% {
+                width: 0%;
+            }
+
+            60% {
+                width: 75%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
 <body>
+
+    <!-- PAGE LOADER -->
+    <div id="page-loader" role="status" aria-label="Carregando">
+        <img src="https://res.cloudinary.com/dbcz5yhgs/image/upload/v1772106248/LOGO_NYR_ufn70y.png" alt="Nyr Festas"
+            class="loader-logo" fetchpriority="high">
+        <div class="loader-bar-track">
+            <div class="loader-bar-fill"></div>
+        </div>
+    </div>
+
 
     <!-- TOP BAR -->
     <div class="top-bar">
@@ -1185,7 +1384,7 @@
             <!-- LOGO SLOT: substitua [URL_LOGO_TRANSPARENTE] pelo src real quando disponível -->
             <a href="#" class="nav-logo-slot" aria-label="Nyr Festas">
                 <img src="https://res.cloudinary.com/dbcz5yhgs/image/upload/v1772106248/LOGO_NYR_ufn70y.png"
-                    alt="Nyr Festas" class="nav-logo-img"
+                    alt="Nyr Festas" class="nav-logo-img" loading="eager" fetchpriority="high"
                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <span class="nav-logo-fallback">NYR <span>|</span> FESTAS</span>
             </a>
@@ -1240,6 +1439,21 @@
             <p class="hero-sub reveal" style="transition-delay:0.2s">
                 Este ano nossa linha chegou repleta de novidades — e os pedidos já estão abertos.
             </p>
+            <!-- Contadores animados -->
+            <div class="hero-counter-row reveal" style="transition-delay:0.25s">
+                <div class="hero-counter">
+                    <span class="hero-counter-num" data-target="38">0</span>
+                    <span class="hero-counter-label">Produtos</span>
+                </div>
+                <div class="hero-counter">
+                    <span class="hero-counter-num" data-target="6">0</span>
+                    <span class="hero-counter-label">Categorias</span>
+                </div>
+                <div class="hero-counter">
+                    <span class="hero-counter-num" data-target="2026">0</span>
+                    <span class="hero-counter-label">Temporada</span>
+                </div>
+            </div>
             <a href="#categorias" class="hero-cta reveal" style="transition-delay:0.3s" aria-label="Ver linha junina">
                 VER A LINHA COMPLETA
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -1254,14 +1468,16 @@
     <!-- FILTER BAR -->
     <div class="filter-bar" id="categorias">
         <div class="container filter-inner">
-            <span class="filter-label">Filtrar:</span>
-            <button class="filter-pill active" data-filter="all">Todos</button>
-            <button class="filter-pill" data-filter="inflaveis">Infláveis</button>
-            <button class="filter-pill" data-filter="fogueiras-aventais">Fogueiras & Aventais</button>
-            <button class="filter-pill" data-filter="enfeites">Enfeites</button>
-            <button class="filter-pill" data-filter="aderecos">Adereços</button>
-            <button class="filter-pill" data-filter="chapeus">Chapéus</button>
-            <button class="filter-pill" data-filter="adesivos">Adesivos</button>
+            <span class="filter-label">IR PARA:</span>
+
+            <button class="filter-pill" data-filter="inflaveis"
+                onclick="scrollToSection('inflaveis')">Infláveis</button>
+            <button class="filter-pill" data-filter="fogueiras-aventais"
+                onclick="scrollToSection('fogueiras-aventais')">Fogueiras & Aventais</button>
+            <button class="filter-pill" data-filter="enfeites" onclick="scrollToSection('enfeites')">Enfeites</button>
+            <button class="filter-pill" data-filter="aderecos" onclick="scrollToSection('aderecos')">Adereços</button>
+            <button class="filter-pill" data-filter="chapeus" onclick="scrollToSection('chapeus')">Chapéus</button>
+            <button class="filter-pill" data-filter="adesivos" onclick="scrollToSection('adesivos')">Adesivos</button>
         </div>
     </div>
 
@@ -1281,10 +1497,10 @@
                 <article class="card reveal" data-category="inflaveis" style="transition-delay:0.05s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-149-semLed.png" alt="J-149 – Inflável Arraiá">
+                            <img loading="lazy" src="./src/images/j-149-semLed.png" alt="J-149 – Inflável Arraiá">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-149-comLed.png" alt="J-149 – Inflável Arraiá">
+                            <img loading="lazy" src="./src/images/j-149-comLed.png" alt="J-149 – Inflável Arraiá">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -1328,10 +1544,10 @@
                 <article class="card reveal" data-category="inflaveis" style="transition-delay:0.10s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-150-semLed.png" alt="J-150 – Inflável Portal Casal">
+                            <img loading="lazy" src="./src/images/j-150-semLed.png" alt="J-150 – Inflável Portal Casal">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-150-comLed.png" alt="J-150 – Inflável Portal Casal">
+                            <img loading="lazy" src="./src/images/j-150-comLed.png" alt="J-150 – Inflável Portal Casal">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -1375,10 +1591,12 @@
                 <article class="card reveal" data-category="inflaveis" style="transition-delay:0.15s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/mod1060_sem-led.png" alt="MOD-1060 – Inflável Boneco 1">
+                            <img loading="lazy" src="./src/images/mod1060_sem-led.png"
+                                alt="MOD-1060 – Inflável Boneco 1">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/mod1060_com-led.png" alt="MOD-1060 – Inflável Boneco 1">
+                            <img loading="lazy" src="./src/images/mod1060_com-led.png"
+                                alt="MOD-1060 – Inflável Boneco 1">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -1421,10 +1639,10 @@
                 <article class="card reveal" data-category="inflaveis" style="transition-delay:0.25s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-151__semLed.png" alt="J-151 – Inflável Boneco 2">
+                            <img loading="lazy" src="./src/images/j-151__semLed.png" alt="J-151 – Inflável Boneco 2">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-151__comLed.png" alt="J-151 – Inflável Boneco 2">
+                            <img loading="lazy" src="./src/images/j-151__comLed.png" alt="J-151 – Inflável Boneco 2">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -1468,10 +1686,10 @@
                 <article class="card reveal" data-category="inflaveis" style="transition-delay:0.20s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-152__semLed.png" alt="J-152 – Inflável Boneco 3">
+                            <img loading="lazy" src="./src/images/j-152__semLed.png" alt="J-152 – Inflável Boneco 3">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-152__comLed.png" alt="J-152 – Inflável Boneco 3">
+                            <img loading="lazy" src="./src/images/j-152__comLed.png" alt="J-152 – Inflável Boneco 3">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -1517,7 +1735,11 @@
         </div>
     </section>
 
-    <div class="section-divider"></div>
+    <div class="wave-divider">
+        <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,24 C200,48 400,0 600,24 C800,48 1000,0 1200,24 L1200,48 L0,48 Z" fill="#f5f5f5" />
+        </svg>
+    </div>
 
     <!-- ═══ 2. FOGUEIRAS & AVENTAIS ═══ -->
     <section class="category-section" id="fogueiras-aventais" data-category="fogueiras-aventais">
@@ -1608,22 +1830,22 @@
                 <article class="card reveal" data-category="fogueiras-aventais" style="transition-delay:0.20s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-182.png" alt="J-182 – Avental c/ Babado">
+                            <img loading="lazy" src="./src/images/j-182.png" alt="J-182 – Avental c/ Babado">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-182_2.png" alt="J-182 – Avental c/ Babado">
+                            <img loading="lazy" src="./src/images/j-182_2.png" alt="J-182 – Avental c/ Babado">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-182_3.png" alt="J-182 – Avental c/ Babado">
+                            <img loading="lazy" src="./src/images/j-182_3.png" alt="J-182 – Avental c/ Babado">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-182_4.png" alt="J-182 – Avental c/ Babado">
+                            <img loading="lazy" src="./src/images/j-182_4.png" alt="J-182 – Avental c/ Babado">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-182_5.png" alt="J-182 – Avental c/ Babado">
+                            <img loading="lazy" src="./src/images/j-182_5.png" alt="J-182 – Avental c/ Babado">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-182_6.png" alt="J-182 – Avental c/ Babado">
+                            <img loading="lazy" src="./src/images/j-182_6.png" alt="J-182 – Avental c/ Babado">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -1670,10 +1892,10 @@
                 <article class="card reveal" data-category="fogueiras-aventais" style="transition-delay:0.25s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-190.png" alt="J-190 – Avental Quadriculado">
+                            <img loading="lazy" src="./src/images/j-190.png" alt="J-190 – Avental Quadriculado">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-190_2.png" alt="J-190 – Avental Quadriculado">
+                            <img loading="lazy" src="./src/images/j-190_2.png" alt="J-190 – Avental Quadriculado">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -1716,7 +1938,11 @@
         </div>
     </section>
 
-    <div class="section-divider"></div>
+    <div class="wave-divider flip">
+        <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,24 C200,48 400,0 600,24 C800,48 1000,0 1200,24 L1200,48 L0,48 Z" fill="#ffffff" />
+        </svg>
+    </div>
 
     <!-- ═══ 3. ENFEITES ═══ -->
     <section class="category-section" id="enfeites" data-category="enfeites">
@@ -1756,13 +1982,16 @@
                 <article class="card reveal" data-category="enfeites" style="transition-delay:0.10s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-146.png" alt="J-146 – Boneco de Enfeite p/ Pendurar">
+                            <img loading="lazy" src="./src/images/j-146.png"
+                                alt="J-146 – Boneco de Enfeite p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-146_2.png" alt="J-146 – Boneco de Enfeite p/ Pendurar">
+                            <img loading="lazy" src="./src/images/j-146_2.png"
+                                alt="J-146 – Boneco de Enfeite p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-146_3.png" alt="J-146 – Boneco de Enfeite p/ Pendurar">
+                            <img loading="lazy" src="./src/images/j-146_3.png"
+                                alt="J-146 – Boneco de Enfeite p/ Pendurar">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -1804,16 +2033,16 @@
                 <article class="card reveal" data-category="enfeites" style="transition-delay:0.15s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-147.png" alt="J-147 – Boneco de Enfeite Vareta">
+                            <img loading="lazy" src="./src/images/j-147.png" alt="J-147 – Boneco de Enfeite Vareta">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-147_2.png" alt="J-147 – Boneco de Enfeite Vareta">
+                            <img loading="lazy" src="./src/images/j-147_2.png" alt="J-147 – Boneco de Enfeite Vareta">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-147_3.png" alt="J-147 – Boneco de Enfeite Vareta">
+                            <img loading="lazy" src="./src/images/j-147_3.png" alt="J-147 – Boneco de Enfeite Vareta">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-147_4.png" alt="J-147 – Boneco de Enfeite Vareta">
+                            <img loading="lazy" src="./src/images/j-147_4.png" alt="J-147 – Boneco de Enfeite Vareta">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -1879,16 +2108,16 @@
                 <article class="card reveal" data-category="enfeites" style="transition-delay:0.25s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-175.png" alt="J-175 – Plaquinha Junina">
+                            <img loading="lazy" src="./src/images/j-175.png" alt="J-175 – Plaquinha Junina">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-175_2.png" alt="J-175 – Plaquinha Junina">
+                            <img loading="lazy" src="./src/images/j-175_2.png" alt="J-175 – Plaquinha Junina">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-175_3.png" alt="J-175 – Plaquinha Junina">
+                            <img loading="lazy" src="./src/images/j-175_3.png" alt="J-175 – Plaquinha Junina">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-175_4.png" alt="J-175 – Plaquinha Junina">
+                            <img loading="lazy" src="./src/images/j-175_4.png" alt="J-175 – Plaquinha Junina">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -1931,16 +2160,16 @@
                 <article class="card reveal" data-category="enfeites" style="transition-delay:0.30s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-144.png" alt="J-144 – Boneco c/ Cesto em Palha">
+                            <img loading="lazy" src="./src/images/j-144.png" alt="J-144 – Boneco c/ Cesto em Palha">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-144_2.png" alt="J-144 – Boneco c/ Cesto em Palha">
+                            <img loading="lazy" src="./src/images/j-144_2.png" alt="J-144 – Boneco c/ Cesto em Palha">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-144_3.png" alt="J-144 – Boneco c/ Cesto em Palha">
+                            <img loading="lazy" src="./src/images/j-144_3.png" alt="J-144 – Boneco c/ Cesto em Palha">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-144_4.png" alt="J-144 – Boneco c/ Cesto em Palha">
+                            <img loading="lazy" src="./src/images/j-144_4.png" alt="J-144 – Boneco c/ Cesto em Palha">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -1983,16 +2212,20 @@
                 <article class="card reveal" data-category="enfeites" style="transition-delay:0.05s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/J-157.png" alt="J-157 – Pipa Junina Pequena p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-157.png"
+                                alt="J-157 – Pipa Junina Pequena p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-157_2.png" alt="J-157 – Pipa Junina Pequena p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-157_2.png"
+                                alt="J-157 – Pipa Junina Pequena p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-157_3.png" alt="J-157 – Pipa Junina Pequena p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-157_3.png"
+                                alt="J-157 – Pipa Junina Pequena p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-157_4.png" alt="J-157 – Pipa Junina Pequena p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-157_4.png"
+                                alt="J-157 – Pipa Junina Pequena p/ Pendurar">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2035,13 +2268,16 @@
                 <article class="card reveal" data-category="enfeites" style="transition-delay:0.10s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/J-163.png" alt="J-163 – Guirlanda Decorativa p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-163.png"
+                                alt="J-163 – Guirlanda Decorativa p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-163_2.png" alt="J-163 – Guirlanda Decorativa p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-163_2.png"
+                                alt="J-163 – Guirlanda Decorativa p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-163_3.png" alt="J-163 – Guirlanda Decorativa p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-163_3.png"
+                                alt="J-163 – Guirlanda Decorativa p/ Pendurar">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2084,13 +2320,16 @@
                 <article class="card reveal" data-category="enfeites" style="transition-delay:0.15s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/J-161.png" alt="J-161 – Bandeira Decorativa p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-161.png"
+                                alt="J-161 – Bandeira Decorativa p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-161_2.png" alt="J-161 – Bandeira Decorativa p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-161_2.png"
+                                alt="J-161 – Bandeira Decorativa p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-161_3.png" alt="J-161 – Bandeira Decorativa p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-161_3.png"
+                                alt="J-161 – Bandeira Decorativa p/ Pendurar">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2132,22 +2371,28 @@
                 <article class="card reveal" data-category="enfeites" style="transition-delay:0.20s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/J-165.png" alt="J-165 – Guirlanda Circular p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-165.png"
+                                alt="J-165 – Guirlanda Circular p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-165_2.png" alt="J-165 – Guirlanda Circular p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-165_2.png"
+                                alt="J-165 – Guirlanda Circular p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-165_3.png" alt="J-165 – Guirlanda Circular p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-165_3.png"
+                                alt="J-165 – Guirlanda Circular p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-165_4.png" alt="J-165 – Guirlanda Circular p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-165_4.png"
+                                alt="J-165 – Guirlanda Circular p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-165_5.png" alt="J-165 – Guirlanda Circular p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-165_5.png"
+                                alt="J-165 – Guirlanda Circular p/ Pendurar">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-165_6.png" alt="J-165 – Guirlanda Circular p/ Pendurar">
+                            <img loading="lazy" src="./src/images/J-165_6.png"
+                                alt="J-165 – Guirlanda Circular p/ Pendurar">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2192,7 +2437,11 @@
         </div>
     </section>
 
-    <div class="section-divider"></div>
+    <div class="wave-divider">
+        <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,24 C200,48 400,0 600,24 C800,48 1000,0 1200,24 L1200,48 L0,48 Z" fill="#f5f5f5" />
+        </svg>
+    </div>
 
     <!-- ═══ 4. ADEREÇOS ═══ -->
     <section class="category-section" id="aderecos" data-category="aderecos">
@@ -2210,16 +2459,20 @@
                 <article class="card reveal" data-category="aderecos" style="transition-delay:0.05s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-187_1.png" alt="J-187 – Tiara c/ Mini Chapéu e Fitas">
+                            <img loading="lazy" src="./src/images/j-187_1.png"
+                                alt="J-187 – Tiara c/ Mini Chapéu e Fitas">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-187_2.png" alt="J-187 – Tiara c/ Mini Chapéu e Fitas">
+                            <img loading="lazy" src="./src/images/J-187_2.png"
+                                alt="J-187 – Tiara c/ Mini Chapéu e Fitas">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-187_3.png" alt="J-187 – Tiara c/ Mini Chapéu e Fitas">
+                            <img loading="lazy" src="./src/images/J-187_3.png"
+                                alt="J-187 – Tiara c/ Mini Chapéu e Fitas">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-187_4.png" alt="J-187 – Tiara c/ Mini Chapéu e Fitas">
+                            <img loading="lazy" src="./src/images/J-187_4.png"
+                                alt="J-187 – Tiara c/ Mini Chapéu e Fitas">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2262,13 +2515,13 @@
                 <article class="card reveal" data-category="aderecos" style="transition-delay:0.10s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-186_1.png" alt="J-186 – Presilha c/ Laço e Fitas">
+                            <img loading="lazy" src="./src/images/j-186_1.png" alt="J-186 – Presilha c/ Laço e Fitas">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-186_2.png" alt="J-186 – Presilha c/ Laço e Fitas">
+                            <img loading="lazy" src="./src/images/j-186_2.png" alt="J-186 – Presilha c/ Laço e Fitas">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-186_3.png" alt="J-186 – Presilha c/ Laço e Fitas">
+                            <img loading="lazy" src="./src/images/j-186_3.png" alt="J-186 – Presilha c/ Laço e Fitas">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2310,10 +2563,12 @@
                 <article class="card reveal" data-category="aderecos" style="transition-delay:0.15s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-191.png" alt="J-191 – Presilha Girassol c/ Laço e Fitas">
+                            <img loading="lazy" src="./src/images/j-191.png"
+                                alt="J-191 – Presilha Girassol c/ Laço e Fitas">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-191_2.png" alt="J-191 – Presilha Girassol c/ Laço e Fitas">
+                            <img loading="lazy" src="./src/images/j-191_2.png"
+                                alt="J-191 – Presilha Girassol c/ Laço e Fitas">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2355,16 +2610,16 @@
                 <article class="card reveal" data-category="aderecos" style="transition-delay:0.20s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-168.png" alt="J-168 – Brinco Junino">
+                            <img loading="lazy" src="./src/images/j-168.png" alt="J-168 – Brinco Junino">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-168_2.png" alt="J-168 – Brinco Junino">
+                            <img loading="lazy" src="./src/images/j-168_2.png" alt="J-168 – Brinco Junino">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-168_3.png" alt="J-168 – Brinco Junino">
+                            <img loading="lazy" src="./src/images/j-168_3.png" alt="J-168 – Brinco Junino">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-168_4.png" alt="J-168 – Brinco Junino">
+                            <img loading="lazy" src="./src/images/j-168_4.png" alt="J-168 – Brinco Junino">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2407,16 +2662,16 @@
                 <article class="card reveal" data-category="aderecos" style="transition-delay:0.25s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-179.png" alt="J-179 – Gravata em Papel">
+                            <img loading="lazy" src="./src/images/j-179.png" alt="J-179 – Gravata em Papel">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-179_2.png" alt="J-179 – Gravata em Papel">
+                            <img loading="lazy" src="./src/images/j-179_2.png" alt="J-179 – Gravata em Papel">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-179_3.png" alt="J-179 – Gravata em Papel">
+                            <img loading="lazy" src="./src/images/j-179_3.png" alt="J-179 – Gravata em Papel">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-179_4.png" alt="J-179 – Gravata em Papel">
+                            <img loading="lazy" src="./src/images/j-179_4.png" alt="J-179 – Gravata em Papel">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2525,7 +2780,11 @@
         </div>
     </section>
 
-    <div class="section-divider"></div>
+    <div class="wave-divider flip">
+        <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,24 C200,48 400,0 600,24 C800,48 1000,0 1200,24 L1200,48 L0,48 Z" fill="#ffffff" />
+        </svg>
+    </div>
 
     <!-- ═══ 5. CHAPÉUS ═══ -->
     <section class="category-section" id="chapeus" data-category="chapeus">
@@ -2675,7 +2934,11 @@
         </div>
     </section>
 
-    <div class="section-divider"></div>
+    <div class="wave-divider">
+        <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,24 C200,48 400,0 600,24 C800,48 1000,0 1200,24 L1200,48 L0,48 Z" fill="#f5f5f5" />
+        </svg>
+    </div>
 
     <!-- ═══ 6. ADESIVOS ═══ -->
     <section class="category-section" id="adesivos" data-category="adesivos">
@@ -2693,22 +2956,22 @@
                 <article class="card reveal" data-category="adesivos" style="transition-delay:0.05s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="images/j-121-1.png" alt="J-121 – Adesivo Facial + Pedrinhas">
+                            <img loading="lazy" src="images/j-121-1.png" alt="J-121 – Adesivo Facial + Pedrinhas">
                         </div>
                         <div class="card-slide">
-                            <img src="images/j-121-2.png" alt="J-121 – Adesivo Facial + Pedrinhas">
+                            <img loading="lazy" src="images/j-121-2.png" alt="J-121 – Adesivo Facial + Pedrinhas">
                         </div>
                         <div class="card-slide">
-                            <img src="images/j-121-3.png" alt="J-121 – Adesivo Facial + Pedrinhas">
+                            <img loading="lazy" src="images/j-121-3.png" alt="J-121 – Adesivo Facial + Pedrinhas">
                         </div>
                         <div class="card-slide">
-                            <img src="images/j-121-4.png" alt="J-121 – Adesivo Facial + Pedrinhas">
+                            <img loading="lazy" src="images/j-121-4.png" alt="J-121 – Adesivo Facial + Pedrinhas">
                         </div>
                         <div class="card-slide">
-                            <img src="images/j-121-5.png" alt="J-121 – Adesivo Facial + Pedrinhas">
+                            <img loading="lazy" src="images/j-121-5.png" alt="J-121 – Adesivo Facial + Pedrinhas">
                         </div>
                         <div class="card-slide">
-                            <img src="images/j-121-6.png" alt="J-121 – Adesivo Facial + Pedrinhas">
+                            <img loading="lazy" src="images/j-121-6.png" alt="J-121 – Adesivo Facial + Pedrinhas">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2753,16 +3016,16 @@
                 <article class="card reveal" data-category="adesivos" style="transition-delay:0.10s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/j-122-1.png" alt="J-122 – Adesivo Facial">
+                            <img loading="lazy" src="./src/images/j-122-1.png" alt="J-122 – Adesivo Facial">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-122-2.png" alt="J-122 – Adesivo Facial">
+                            <img loading="lazy" src="./src/images/j-122-2.png" alt="J-122 – Adesivo Facial">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-122-3.png" alt="J-122 – Adesivo Facial">
+                            <img loading="lazy" src="./src/images/j-122-3.png" alt="J-122 – Adesivo Facial">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/j-122-4.png" alt="J-122 – Adesivo Facial">
+                            <img loading="lazy" src="./src/images/j-122-4.png" alt="J-122 – Adesivo Facial">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2806,19 +3069,19 @@
                 <article class="card reveal" data-category="adesivos" style="transition-delay:0.15s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/J-167.png" alt="J-167 – Mini Adesivo Autocolante">
+                            <img loading="lazy" src="./src/images/J-167.png" alt="J-167 – Mini Adesivo Autocolante">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-167_2.png" alt="J-167 – Mini Adesivo Autocolante">
+                            <img loading="lazy" src="./src/images/J-167_2.png" alt="J-167 – Mini Adesivo Autocolante">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-167_3.png" alt="J-167 – Mini Adesivo Autocolante">
+                            <img loading="lazy" src="./src/images/J-167_3.png" alt="J-167 – Mini Adesivo Autocolante">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-167_4.png" alt="J-167 – Mini Adesivo Autocolante">
+                            <img loading="lazy" src="./src/images/J-167_4.png" alt="J-167 – Mini Adesivo Autocolante">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-167_5.png" alt="J-167 – Mini Adesivo Autocolante">
+                            <img loading="lazy" src="./src/images/J-167_5.png" alt="J-167 – Mini Adesivo Autocolante">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2862,10 +3125,10 @@
                 <article class="card reveal" data-category="adesivos" style="transition-delay:0.20s">
                     <div class="card-media">
                         <div class="card-slide active">
-                            <img src="./src/images/J-166.png" alt="J-166 – Adesivo Autocolante Grande">
+                            <img loading="lazy" src="./src/images/J-166.png" alt="J-166 – Adesivo Autocolante Grande">
                         </div>
                         <div class="card-slide">
-                            <img src="./src/images/J-166_2.png" alt="J-166 – Adesivo Autocolante Grande">
+                            <img loading="lazy" src="./src/images/J-166_2.png" alt="J-166 – Adesivo Autocolante Grande">
                         </div>
                         <div class="card-nav">
                             <button class="card-nav-btn" onclick="prevSlide(this)" aria-label="Foto anterior">
@@ -2939,7 +3202,8 @@
         <div class="container">
             <div class="footer-logo">NYR | FESTAS</div>
             <div class="footer-socials">
-                <a href="mailto:vendas@mm88.com.br" class="footer-social-btn email">
+                <a href="/cdn-cgi/l/email-protection#f7819299939684b79a9acfcfd994989ad99585"
+                    class="footer-social-btn email">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path
                             d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
@@ -2972,7 +3236,30 @@
         </svg>
     </a>
 
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script>
+
+        // ─── PAGE LOADER ──────────────────────────────────
+        const loader = document.getElementById('page-loader');
+        const LOADER_MIN = 1000; // ms mínimo de exibição
+        const loaderStart = Date.now();
+
+        function hideLoader() {
+            const elapsed = Date.now() - loaderStart;
+            const remaining = Math.max(0, LOADER_MIN - elapsed);
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                // Remove do DOM após a transição
+                loader.addEventListener('transitionend', () => loader.remove(), { once: true });
+            }, remaining);
+        }
+
+        if (document.readyState === 'complete') {
+            hideLoader();
+        } else {
+            window.addEventListener('load', hideLoader);
+        }
+
         // ─── LOGO FALLBACK INIT ───────────────────────────
         // Quando o logo real for inserido, remova este bloco
         const logoImg = document.querySelector('.nav-logo-img');
@@ -2989,6 +3276,48 @@
                 if (fallback) fallback.style.display = 'block';
             }
         }
+
+
+        // ─── PARALLAX HERO ────────────────────────────────
+        const heroEl = document.querySelector('.hero');
+        if (heroEl && window.innerWidth > 768) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.scrollY;
+                const heroH = heroEl.offsetHeight;
+                if (scrolled < heroH * 1.5) {
+                    heroEl.style.backgroundPositionY = `calc(center + ${scrolled * 0.3}px)`;
+                }
+            }, { passive: true });
+        }
+
+        // ─── COUNTER ANIMATION ────────────────────────────
+        function animateCounter(el) {
+            const target = parseInt(el.dataset.target);
+            const duration = target > 100 ? 1800 : 900;
+            const step = target / (duration / 16);
+            let current = 0;
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    el.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    el.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.hero-counter-num').forEach(animateCounter);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const counterRow = document.querySelector('.hero-counter-row');
+        if (counterRow) counterObserver.observe(counterRow);
 
         // ─── SCROLL REVEAL ────────────────────────────────
         const revealObserver = new IntersectionObserver((entries) => {
@@ -3008,61 +3337,10 @@
             if (rect.top < window.innerHeight) el.classList.add('visible');
         });
 
-        // ─── FILTER ───────────────────────────────────────
-        function applyFilter(filter) {
-            const sections = document.querySelectorAll('.category-section');
-            const cards = document.querySelectorAll('.card');
-
-            if (filter === 'all') {
-                sections.forEach(s => s.style.display = '');
-                cards.forEach(c => c.style.display = '');
-            } else {
-                sections.forEach(s => {
-                    s.style.display = s.dataset.category === filter ? '' : 'none';
-                });
-                cards.forEach(c => {
-                    c.style.display = c.dataset.category === filter ? '' : 'none';
-                });
-            }
-
-            // Re-trigger reveals for newly shown cards
-            document.querySelectorAll('.reveal:not(.visible)').forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight) el.classList.add('visible');
-            });
-        }
-
-        // Filter pills (filter bar)
-        document.querySelectorAll('.filter-pill').forEach(pill => {
-            pill.addEventListener('click', () => {
-                document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-                document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
-                pill.classList.add('active');
-                const matchingNav = document.querySelector(`.nav-pill[data-filter="${pill.dataset.filter}"]`);
-                if (matchingNav) matchingNav.classList.add('active');
-                applyFilter(pill.dataset.filter);
-            });
-        });
-
-        // Nav pills
-        document.querySelectorAll('.nav-pill').forEach(pill => {
-            pill.addEventListener('click', () => {
-                document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
-                document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-                pill.classList.add('active');
-                const matchingFilter = document.querySelector(`.filter-pill[data-filter="${pill.dataset.filter}"]`);
-                if (matchingFilter) matchingFilter.classList.add('active');
-                applyFilter(pill.dataset.filter);
-            });
-        });
-
         // ─── SCROLL TO SECTION ────────────────────────────
         function scrollToSection(id) {
-            applyFilter('all');
-            setTimeout(() => {
-                const el = document.getElementById(id);
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 50);
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // ─── SORTIDO CAROUSEL ─────────────────────────────
@@ -3163,13 +3441,7 @@
             hamburger.classList.remove('open');
             hamburger.setAttribute('aria-expanded', false);
 
-            // Sincroniza pills e dropdown
-            document.querySelectorAll('.nav-dropdown-pill').forEach(p => p.classList.toggle('active', p.dataset.filter === filter));
-            document.querySelectorAll('.nav-pill').forEach(p => p.classList.toggle('active', p.dataset.filter === filter));
-            document.querySelectorAll('.filter-pill').forEach(p => p.classList.toggle('active', p.dataset.filter === filter));
-
-            // Aplica filtro e rola
-            applyFilter(filter);
+            // Rola para a seção
             if (filter !== 'all') {
                 setTimeout(() => {
                     const el = document.getElementById(filter);
